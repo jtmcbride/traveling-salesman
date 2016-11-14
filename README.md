@@ -15,6 +15,8 @@ The traveling salesman problem is a. I will implement an algorithm using simulat
 
 The app will consist of a single screen with a map and several inputs.
 
+![alt-tag](wireframes/salesman.png)
+
 This project will be implemented with the following technologies:
 
 - Vanilla JavaScript for algorithm and basic structure,
