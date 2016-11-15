@@ -1,3 +1,14 @@
+export const connectPoints = (context, points) => {
+  context.beginPath()
+  for (let i = 0; i < points.length - 1; i++) {
+    let p1 = points[i];
+    let p2 = points[i+1];
+    context.moveTo(p1.x, p1.y);
+    context.lineTo(p2.x,p2.y);
+    context.stroke();
+  }
+}
+
 export const distance = (pointOne, pointTwo) => {
   return Math.sqrt(Math.pow(pointOne.x - pointTwo.x, 2) + Math.pow(pointOne.y - pointTwo.y, 2))
 }
@@ -13,22 +24,61 @@ export const tourDistance = (tour) => {
   return d + distance(tour[0], tour[tour.length - 1]);
 }
 
+function shuffle (array) {
+  var i = 0
+    , j = 0
+    , temp = null
 
-export const algo = (tour) => {
-  let nfe = 1000
+  for (i = array.length - 1; i > 0; i -= 1) {
+    j = Math.floor(Math.random() * (i + 1))
+    temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+}
+
+
+export const algo = (tour, context) => {
+  let ans = [];
+  let routes = [];
+  shuffle(tour);
+  let nfe = 15000
+  let temp = 100
   let bestD = tourDistance(tour);
+  let bestTour = tour;
+  let prob;
   for (var i = 0; i < nfe; i++) {
-    let newTour = tour.slice(0);
+    let newTour = bestTour.slice(0);
     let idxA = Math.floor(Math.random() * tour.length);
     let idxB = Math.floor(Math.random() * tour.length);
-    let a = tour[idxA];
-    let b = tour[idxB];
-    tour[idxA] = b;
-    tour[idxB] = a;
-    if (tourDistance(newTour) < bestD) {
-      console.log(i)
-      return newTour;
+    let low = Math.min(idxA, idxB)
+    let high = Math.max(idxA, idxB)
+    // let a = newTour[idxA];
+    // let b = newTour[idxB];
+    // debugger;
+    newTour.splice(low, high-low, ...newTour.slice(low,high).reverse());
+    // newTour[idxA] = b;
+    // newTour[idxB] = a;
+    let newTourDistance = tourDistance(newTour);
+    if (temp > .001) {
+      prob = Math.min(1, Math.pow(Math.E, (bestD - newTourDistance)/temp));
+    } else {
+      prob = 0;
     }
+    let rand = Math.random();
+    if (newTourDistance < bestD || rand < prob) {
+       // console.log(newTourDistance);
+       bestTour = newTour;
+       bestD = newTourDistance;
+       ans.push(bestD);
+       if ( i % 10 === 0) {
+        // context.clearRect(0,0, 1000, 1000);
+        // connectPoints(context, bestTour);
+        routes.push(bestTour);
+      }
+    }
+    temp = 100 * Math.pow(.95, i);
   }
-  return tour;
+  routes.push(bestTour);
+  return routes;
 }
