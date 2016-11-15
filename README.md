@@ -27,14 +27,18 @@ This project will be implemented with the following technologies:
 
 **Day 1**: Setup all necessary Node modules, including getting webpack up and running and `Easel.js` installed.  Create `webpack.config.js` as well as `package.json`. 
 
-- Get a simple canvas with map image and clickable placement
+- Get a simple canvas with map image and clickable placement of points
+- create a map.js file to hold all map canvas logic
 
-**Day 2**: Measure distance between points on the canvas and calculate total distance betwee series of points.
+**Day 2**: Measure distance between points on the canvas and calculate total distance betwee series of points. Allow clicking to add points to the canvas and keep track of them. 
+
+- write functions to get positions of points on the canvaes and measure distance between two points and another function to sum multiple distances for use in the algorithm
 
 
 **Day 3**: Create the algorithm logic backend.
 
 - Have a working algorithm that gives a good close estimate of the shortest route between all points.
+- algorithm file to hold the logic of the algorithm and all the calculations that will then communicate with the map
 - Begin animation of paths between points on the canvas.
 
 
