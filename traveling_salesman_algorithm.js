@@ -1,5 +1,5 @@
 export const connectPoints = (context, points) => {
-  context.beginPath()
+  // context.beginPath()
   for (let i = 0; i < points.length - 1; i++) {
     let p1 = points[i];
     let p2 = points[i+1];

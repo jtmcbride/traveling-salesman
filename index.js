@@ -21,6 +21,7 @@ $(() => {
       ctx.beginPath();
       ctx.arc(point.x,point.y,10,0,2*Math.PI);
       ctx.stroke();
+      ctx.beginPath();
     });
     // ctx.beginPath();
      // ctx.arc(pos.x,pos.y,10,0,2*Math.PI);
@@ -31,18 +32,19 @@ $(() => {
   $('#run').click(() => {
     let routes = algo(points, ctx);
     console.log(points.length);
-    ctx.clearRect(0,0, canvas.width, canvas.height);
-    for (var i = 0; i < routes.length; i++) {
-      setTimeout(connectPoints, i*250, ctx, routes[i])
-    }
+    // ctx.clearRect(0,0, canvas.width, canvas.height);
+    // for (var i = 0; i < routes.length; i++) {
+    //   setTimeout(connectPoints, i*250, ctx, routes[i])
+    // }
     // connectPoints(ctx, points);
+    connectPoints(ctx, routes[routes.length-1]);
 
   });
   google.maps.event.addListener(map, 'click', function(event) {
     let marker = new google.maps.Marker({position: event.latLng, map: map});
     markers.push(marker);
     console.log(marker);
-    if (markers.length === 40) {
+    if (markers.length === 15) {
       let p = markers.map(mark => ({lat: mark.position.lat(), lng: mark.position.lng()}));
       let route = new google.maps.Polyline({
         path: p,
@@ -108,15 +110,26 @@ function initMap() {
 
 
 export const connectPoints = (context, points) => {
-  context.clearRect(0,0, canvas.width, canvas.height);
+  // context.clearRect(0,0, canvas.width, canvas.height);
   context.beginPath();
+  context.fillStyle = randColor();
   let currPoints = points.slice(0);
   currPoints.push(points[0]);
-  for (let i = 0; i < currPoints.length - 1; i++) {
-    let p1 = currPoints[i];
-    let p2 = currPoints[i+1];
-    context.moveTo(p1.x, p1.y);
+  context.moveTo(currPoints[0].x, currPoints[0].y);
+  for (let i = 1; i < currPoints.length - 1; i++) {
+    // let p1 = currPoints[i];
+    let p2 = currPoints[i];
     context.lineTo(p2.x,p2.y);
-    context.stroke();
+    
+    
   }
+  
+  // context.closePath();
+
+  context.fill();
+  context.stroke();
+
 }
+
+const randHex = () => '0123456789ABCDEF'[Math.floor(16*Math.random())];
+const randColor = () => `#${[1,2,3,4,5,6].map(randHex).join('')}`
