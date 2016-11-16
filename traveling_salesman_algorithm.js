@@ -42,7 +42,7 @@ export const algo = (tour, context) => {
   let ans = [];
   let routes = [];
   shuffle(tour);
-  let nfe = 15000
+  let nfe = 25000
   let temp = 100
   let bestD = tourDistance(tour);
   let bestTour = tour;
@@ -74,6 +74,48 @@ export const algo = (tour, context) => {
        if ( i % 10 === 0) {
         // context.clearRect(0,0, 1000, 1000);
         // connectPoints(context, bestTour);
+        routes.push(bestTour);
+      }
+    }
+    temp = 100 * Math.pow(.95, i);
+  }
+  routes.push(bestTour);
+  return routes;
+}
+
+export const googAlgo = (tour) => {
+  debugger;
+  let ans = [];
+  let routes = [];
+  shuffle(tour);
+  let nfe = 25000
+  let temp = 100
+  let measureTour = tour.slice(0);
+  measureTour.push(measureTour[0]);
+  let bestD = google.maps.geometry.spherical.computeLength(measureTour);
+  let bestTour = tour;
+  let prob;
+  for (let i = 0; i < nfe; i++) {
+    let newTour = bestTour.slice(0);
+    let idxA = Math.floor(Math.random() * tour.length);
+    let idxB = Math.floor(Math.random() * tour.length);
+    let low = Math.min(idxA, idxB)
+    let high = Math.max(idxA, idxB)
+    newTour.splice(low, high-low, ...newTour.slice(low,high).reverse());
+    let measureNewTour = newTour.slice(0);
+    measureNewTour.push(measureNewTour[0]);
+    let newTourDistance = google.maps.geometry.spherical.computeLength(measureNewTour);
+    if (temp > .001) {
+      prob = Math.min(1, Math.pow(Math.E, (bestD - newTourDistance)/temp));
+    } else {
+      prob = 0;
+    }
+    let rand = Math.random();
+    if (newTourDistance < bestD || rand < prob) {
+       bestTour = newTour;
+       bestD = newTourDistance;
+       ans.push(bestD);
+       if ( i % 10 === 0) {
         routes.push(bestTour);
       }
     }
