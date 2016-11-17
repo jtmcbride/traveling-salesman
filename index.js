@@ -1,20 +1,24 @@
 import mapPoint from './mapPoint';
 import {distance, tourDistance, algo, googAlgo } from './traveling_salesman_algorithm';
-import { stateCoords} from './coords.js';
+import coords from './coords.js';
 
 
 $(() => {
+  //canvas setup
   let canvas = document.getElementById("canvas");
   let ctx = canvas.getContext("2d");
 
   let points = [];
 
+  // map setup
   let map = initMap();
   let markers = [];
-  markers = stateCoords.map(c => new google.maps.Marker({position: c, map: map}));
+  // 8markers = stateCoords.map(c => new google.maps.Marker({position: c, map: map}));
   let pathData = [];
   let currentPath;
 
+
+  // add points to the canvas
   $("#canvas").mousedown(e => {
     let pos = getMousePos(canvas, e);
     points.push(new mapPoint(pos.x, pos.y))
@@ -32,6 +36,14 @@ $(() => {
     // connectPoints(ctx, points);
   });
 
+  $('#draw').click(() => {
+    $('#canvas').hover((evt) => {
+      console.log(evt.clientX);
+    });
+    $('#canvas').mousemove(evt => console.log(evt.clientX))
+  });
+
+  // toggle display of map markers
   $("#hide-markers").click(function () {
     let currentMap;
     if (markers[0].map) {
@@ -44,6 +56,8 @@ $(() => {
     markers.forEach(mark => mark.setMap(currentMap));
   });
 
+
+  // run algorithm for canvas
   $('#run').click(() => {
     let routes = algo(points, ctx);
     // ctx.clearRect(0,0, canvas.width, canvas.height);
@@ -51,7 +65,7 @@ $(() => {
     //   setTimeout(connectPoints, i*250, ctx, routes[i])
     // }
     // connectPoints(ctx, points);
-    connectPoints(ctx, routes[routes.length-1]);
+    connectPoints(ctx, routes[routes.length - 1]);
   });
 
   $('#clear-map').click(() => {
@@ -60,8 +74,25 @@ $(() => {
     currentPath.setMap(null);
   });
 
+  $('#presets').change(function() {
+    markers.forEach(mark => mark.setMap(null));
+    if ($(this).val() == 0) {markers = []} else {
+      markers = coords[$(this).val()].map(c => new google.maps.Marker({position: c, map: map}));
+    }
+    currentPath ? currentPath.setMap(null) : null;
+    if ($(this).val() == 2) {
+      map.setZoom(11); map.setCenter({lat: 37.75534401310656, lng: -122.4203})
+    } else {
+      map.setZoom(2);
+    }
+  });
+
+  // run algorithm for points on the map
   $('#runGoog').click(function () {
-    $(this).attr("disabled", true);
+
+    // diasable button until animation is complete
+    $(":input").attr("disabled", true);
+
     currentPath ? currentPath.setMap(null) : null;
     let p = markers.map(mark => ({lat: mark.position.lat(), lng: mark.position.lng()}));
     p.push({lat: markers[0].position.lat(), lng: markers[0].position.lng()})
@@ -74,7 +105,7 @@ $(() => {
     });
     // route.setMap(map);
     let thePath = route.getPath();
-    let algoAnswer = googAlgo(thePath.getArray());
+    let algoAnswer = googAlgo(thePath.getArray(), parseInt($('#display-num-evals').html()));
     let paths = algoAnswer.routes;
     let distances = algoAnswer.distances;
     console.log(distances[distances.length-1]/ 1609.34);
@@ -90,6 +121,7 @@ $(() => {
       setTimeout(() => {poly.setMap(map); setTimeout(()=>{poly.setMap(null)}, 250)}, i*250);
     }
 
+
       // route.setMap(null);
     let bestRoute = paths[paths.length - 1];
     bestRoute.push(bestRoute[0]);
@@ -101,50 +133,36 @@ $(() => {
       strokeWeight: 2
     });
     currentPath = bestPath;
-    setTimeout(() => {bestPath.setMap(map);$(this).attr("disabled", false);}, paths.length * 250);
+
+    // set best path onto the map and reenable the button to run again
+    if ($('#presets').val() == 2) {
+      bestPath = new google.maps.Polyline({
+        path: coords[2],
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+      currentPath = bestPath;
+    }
+
+    setTimeout(() => {bestPath.setMap(map);$(":input").attr("disabled", false);}, paths.length * 250);
   });
 
+  $('#num-evals').change(function() {
+      let scale = (Math.log(100000) - Math.log(100)) / 100;
+      let value = Math.floor(Math.exp(Math.log(100) + scale * ($(this).val()))+1);
+      $('#display-num-evals').html(value);
+    });
+
+  // click listener to add points to the map
   google.maps.event.addListener(map, 'click', function(event) {
     let marker = new google.maps.Marker({position: event.latLng, map: map});
     markers.push(marker);
-    // if (markers.length === 48000) {
-    //   let p = markers.map(mark => ({lat: mark.position.lat(), lng: mark.position.lng()}));
-    //   p.push({lat: markers[0].position.lat(), lng: markers[0].position.lng()})
-    //   let route = new google.maps.Polyline({
-    //     path: p,
-    //     geodesic: true,
-    //     strokeColor: '#FF0000',
-    //     strokeOpacity: 1.0,
-    //     strokeWeight: 2
-    //   });
-    //   // route.setMap(map);
-    //   let thePath = route.getPath();
-    //   let paths = googAlgo(thePath.getArray());
-    //   for (let i = 0; i < paths.length; i++) {
-    //     let poly = new google.maps.Polyline({
-    //       path: paths[i],
-    //       geodesic: true,
-    //       strokeColor: '#FF0000',
-    //       strokeOpacity: 1.0,
-    //       strokeWeight: 2
-    //     });
-    //     setTimeout(() => {poly.setMap(map); setTimeout(()=>{poly.setMap(null)}, 250)}, i*250);
-    //   }
-
-    //   // route.setMap(null);
-    //   let bestRoute = paths[paths.length - 1];
-    //   let bestPath = new google.maps.Polyline({
-    //     path: bestRoute,
-    //     geodesic: true,
-    //     strokeColor: '#FF0000',
-    //     strokeOpacity: 1.0,
-    //     strokeWeight: 2
-    //   });
-    //   setTimeout(() => bestPath.setMap(map), paths.length * 250);
-    // }
-    
+    let it = ""
+    markers.forEach(m => it += `{lat: ${m.position.lat()}, lng: ${m.position.lng()}},`)
+    console.log(it)
   });
-
 });
 
 

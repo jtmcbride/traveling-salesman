@@ -83,12 +83,13 @@ export const algo = (tour, context) => {
   return routes;
 }
 
-export const googAlgo = (tour) => {
+export const googAlgo = (tour, nfe) => {
   let distances = [];
   let routes = [];
   shuffle(tour);
-  let nfe = 10000
-  let temp = 10
+  let count = 0;
+  // let nfe = 10000
+  let temp = 100000;
   let measureTour = tour.slice(0);
   measureTour.push(measureTour[0]);
   let bestD = google.maps.geometry.spherical.computeLength(measureTour);
@@ -104,12 +105,13 @@ export const googAlgo = (tour) => {
     let measureNewTour = newTour.slice(0);
     measureNewTour.push(measureNewTour[0]);
     let newTourDistance = google.maps.geometry.spherical.computeLength(measureNewTour);
-    if (temp > .001) {
+    if (temp > .0001) {
       prob = Math.min(1, Math.pow(Math.E, (bestD - newTourDistance)/temp));
     } else {
       prob = 0;
     }
     let rand = Math.random();
+    if (rand < prob) { count++ }
     if (newTourDistance < bestD || rand < prob) {
        bestTour = newTour;
        bestD = newTourDistance;
@@ -118,9 +120,10 @@ export const googAlgo = (tour) => {
         routes.push(bestTour);
       }
     }
-    temp = 100 * Math.pow(.95, i);
+    temp = 100 * Math.pow(.99, i);
   }
   routes.push(bestTour);
+  console.log(count);
   distances.push(bestD);
   return {routes, distances};
 }

@@ -12,11 +12,20 @@
 </head>
 <body>
 	<div id="map"></div>
-	<button id="runGoog">googAlgo</button>
-	<button id="hide-markers">Hide Markers</button>
+	<button id="runGoog">Optimize Route</button>
+	<button id="hide-markers">Toggle Markers</button>
 	<button id="clear-map">Clear Map</button>
+	<input id="num-evals" value="67" type="range" min="0" max="100" />
+	<span>Number of evaluations: <span id="display-num-evals">10000</span></span>
+		<select id="presets" name="presets">
+			<option value="0">None</option>
+			<option value="1">State Capitals</option>
+			<option value="3">World Tour</option>
+			<option value="2">Special</option>
+		</select>
 	<canvas id="canvas" width="1000" height="500">
 	</canvas>
-	<button id="run">algo</button>
+	<button id="run">Algorithm</button>
+	<button id="draw">Draw</button>
 </body>
 </html>
