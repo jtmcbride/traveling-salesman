@@ -17,6 +17,21 @@ $(() => {
   let pathData = [];
   let currentPath;
 
+  // setup tabs
+  $('#route-tab').click(function () {
+    $('#paint').css("display", "none");
+    $('#route').css("display", "block");
+    $(this).addClass("active");
+    $('#paint-tab').removeClass("active");
+  });
+
+  $('#paint-tab').click(function () {
+    $('#route').css("display", "none");
+    $('#paint').css("display", "block");
+    $(this).addClass("active");
+    $('#route-tab').removeClass("active");
+  });
+
 
   // add points to the canvas
   $("#canvas").mousedown(e => {
@@ -36,12 +51,12 @@ $(() => {
     // connectPoints(ctx, points);
   });
 
-  $('#draw').click(() => {
-    $('#canvas').hover((evt) => {
-      console.log(evt.clientX);
-    });
-    $('#canvas').mousemove(evt => console.log(evt.clientX))
-  });
+  // $('#draw').click(() => {
+  //   $('#canvas').hover((evt) => {
+  //     console.log(evt.clientX);
+  //   });
+  //   $('#canvas').mousemove(evt => console.log(evt.clientX))
+  // });
 
   // toggle display of map markers
   $("#hide-markers").click(function () {

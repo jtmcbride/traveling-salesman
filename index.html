@@ -13,7 +13,11 @@
 		<title>Ramble On</title>
 	</head>
 	<body>
-		<div>
+		<div class="tabs">
+			<span id="route-tab" class="active">Traveling Salesman</span>
+			<span id="paint-tab">Paint By Algorithm</span>
+		</div>
+		<div id="route">
 			<h1 class="title">Traveling Salesman</h1>
 			<div class="instructions">
 				Welcome! Click on the map to select some stops for your trip. Or you can just pick one
@@ -46,8 +50,7 @@
 			
 			<canvas id="canvas" width="1000" height="500"></canvas>
 			
-			<button id="run">Algorithm</button>
-			<button id="draw">Draw</button>
+			<button id="run">Draw</button>
 		</div>
 	</body>
 </html>
