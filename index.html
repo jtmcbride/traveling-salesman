@@ -1,31 +1,51 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<script
-  src="https://code.jquery.com/jquery-3.1.1.min.js"
-  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-  crossorigin="anonymous"></script>
-	<link rel="stylesheet" type="text/css" href="./app.css">
-	<script src="./bundle.js" type="text/javascript" charset="utf-8"></script>
-	 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-wPhSditxIw4NCaDAJBmIQyekLLnsJII&libraries=geometry"></script>
-	<title>Ramble On</title>
-</head>
-<body>
-	<div id="map"></div>
-	<button id="runGoog">Optimize Route</button>
-	<button id="hide-markers">Toggle Markers</button>
-	<button id="clear-map">Clear Map</button>
-	<input id="num-evals" value="67" type="range" min="0" max="100" />
-	<span>Number of evaluations: <span id="display-num-evals">10000</span></span>
-		<select id="presets" name="presets">
-			<option value="0">None</option>
-			<option value="1">State Capitals</option>
-			<option value="3">World Tour</option>
-			<option value="2">Special</option>
-		</select>
-	<canvas id="canvas" width="1000" height="500">
-	</canvas>
-	<button id="run">Algorithm</button>
-	<button id="draw">Draw</button>
-</body>
+	<head>
+		<script
+		  src="https://code.jquery.com/jquery-3.1.1.min.js"
+		  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		  crossorigin="anonymous">
+		</script>
+		<link rel="stylesheet" type="text/css" href="./app.css">
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+		<script src="./bundle.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-wPhSditxIw4NCaDAJBmIQyekLLnsJII&libraries=geometry"></script>
+		<title>Ramble On</title>
+	</head>
+	<body>
+		<div>
+			<h1 class="title">Traveling Salesman</h1>
+			<div class="instructions">Welcome to Jurassic Park. Click on the map to select some stops for your trip. Or you can just pick one
+			of the preset routes if you'd rather. When you have all the stops you want in your route click optimize and watch it find (one of) the shortest routes. The Traveling Salesman is a classic computer science problem. This app uses an algorithm which implements a 
+			simulated annealing strategy to quickly find one of the shortest routes for you. Give it a try!</div>
+			<div id="map"></div>
+			<div class="buttons sliders">
+				<span>
+				<input id="num-evals" value="67" type="range" min="0" max="100" /> <br />
+				<span>Number of evaluations: <span id="display-num-evals">10000</span></span>
+				</span>
+				<span>
+					Presets:
+					<select id="presets" name="presets">
+						<option value="0">None</option>
+						<option value="1">State Capitals</option>
+						<option value="3">World Tour</option>
+						<option value="2">Special</option>
+					</select>
+				</span>
+			</div>
+			<div class="buttons">
+				<button id="runGoog">Optimize Route</button>
+				<button id="hide-markers">Toggle Markers</button>
+				<button id="clear-map">Clear Map</button>
+			</div>
+		</div>
+		<div id="paint">
+			
+			<canvas id="canvas" width="1000" height="500"></canvas>
+			
+			<button id="run">Algorithm</button>
+			<button id="draw">Draw</button>
+		</div>
+	</body>
 </html>

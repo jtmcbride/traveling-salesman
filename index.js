@@ -48,10 +48,8 @@ $(() => {
     let currentMap;
     if (markers[0].map) {
       currentMap = null;
-      $(this).html("Show Markers");
     } else {
       currentMap = map;
-      $(this).html("Hide Markers");
     }
     markers.forEach(mark => mark.setMap(currentMap));
   });
@@ -71,7 +69,7 @@ $(() => {
   $('#clear-map').click(() => {
     markers.forEach(mark => mark.setMap(null));
     markers = [];
-    currentPath.setMap(null);
+    currentPath ? currentPath.setMap(null) : null;
   });
 
   $('#presets').change(function() {
@@ -91,62 +89,66 @@ $(() => {
   $('#runGoog').click(function () {
 
     // diasable button until animation is complete
-    $(":input").attr("disabled", true);
+    if (markers.length > 4) {
+      $(":input").attr("disabled", true);
 
-    currentPath ? currentPath.setMap(null) : null;
-    let p = markers.map(mark => ({lat: mark.position.lat(), lng: mark.position.lng()}));
-    p.push({lat: markers[0].position.lat(), lng: markers[0].position.lng()})
-    let route = new google.maps.Polyline({
-      path: p,
-      geodesic: true,
-      strokeColor: '#FF0000',
-      strokeOpacity: 1.0,
-      strokeWeight: 2
-    });
-    // route.setMap(map);
-    let thePath = route.getPath();
-    let algoAnswer = googAlgo(thePath.getArray(), parseInt($('#display-num-evals').html()));
-    let paths = algoAnswer.routes;
-    let distances = algoAnswer.distances;
-    console.log(distances[distances.length-1]/ 1609.34);
-
-    for (let i = 0; i < paths.length; i++) {
-      let poly = new google.maps.Polyline({
-        path: paths[i],
+      currentPath ? currentPath.setMap(null) : null;
+      let p = markers.map(mark => ({lat: mark.position.lat(), lng: mark.position.lng()}));
+      p.push({lat: markers[0].position.lat(), lng: markers[0].position.lng()})
+      let route = new google.maps.Polyline({
+        path: p,
         geodesic: true,
         strokeColor: '#FF0000',
         strokeOpacity: 1.0,
         strokeWeight: 2
       });
-      setTimeout(() => {poly.setMap(map); setTimeout(()=>{poly.setMap(null)}, 250)}, i*250);
-    }
+      // route.setMap(map);
+      let thePath = route.getPath();
+      let algoAnswer = googAlgo(thePath.getArray(), parseInt($('#display-num-evals').html()));
+      let paths = algoAnswer.routes;
+      let distances = algoAnswer.distances;
+      console.log(distances[distances.length-1]/ 1609.34);
+
+      for (let i = 0; i < paths.length; i++) {
+        let poly = new google.maps.Polyline({
+          path: paths[i],
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+        setTimeout(() => {poly.setMap(map); setTimeout(()=>{poly.setMap(null)}, 250)}, i*250);
+      }
 
 
-      // route.setMap(null);
-    let bestRoute = paths[paths.length - 1];
-    bestRoute.push(bestRoute[0]);
-    let bestPath = new google.maps.Polyline({
-      path: bestRoute,
-      geodesic: true,
-      strokeColor: '#FF0000',
-      strokeOpacity: 1.0,
-      strokeWeight: 2
-    });
-    currentPath = bestPath;
-
-    // set best path onto the map and reenable the button to run again
-    if ($('#presets').val() == 2) {
-      bestPath = new google.maps.Polyline({
-        path: coords[2],
+        // route.setMap(null);
+      let bestRoute = paths[paths.length - 1];
+      bestRoute.push(bestRoute[0]);
+      let bestPath = new google.maps.Polyline({
+        path: bestRoute,
         geodesic: true,
         strokeColor: '#FF0000',
         strokeOpacity: 1.0,
         strokeWeight: 2
       });
       currentPath = bestPath;
-    }
 
-    setTimeout(() => {bestPath.setMap(map);$(":input").attr("disabled", false);}, paths.length * 250);
+      // set best path onto the map and reenable the button to run again
+      if ($('#presets').val() == 2) {
+        bestPath = new google.maps.Polyline({
+          path: coords[2],
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+        currentPath = bestPath;
+      }
+
+      setTimeout(() => {bestPath.setMap(map);$(":input").attr("disabled", false);}, paths.length * 250);
+    } else {
+      alert("Too easy. Pick some more points.")
+    }
   });
 
   $('#num-evals').change(function() {

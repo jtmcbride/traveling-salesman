@@ -5,7 +5,78 @@
 }
 
 #map {
-
+	width: 70%;
+	margin: 0 auto;
+	display: inline-block;
 	height: 500px;
+}
+
+body {
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+div {
+	margin: 0 auto;
+}
+
+#paint {
+	display: none;
+}
+
+h1.title {
+	margin: 0 auto;
+	width : 50%;
+	text-align: center;
+}
+
+button {
+	width: 30%;
+	background: teal;
+	border: none;
+	border-radius: 5px;
+	padding: 5px;
+	color: white;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+button:hover {
+	opacity: .8;
+}
+
+button:disabled {
+	background: grey;
+}
+
+.buttons{
+	width: 70%;
+	display: flex;
+	justify-content: space-between;
+	float: right;
+	margin-right: 50px
+}
+
+.buttons > button {
+	margin: 5px;
 
 }
+
+.sliders {
+	width: 70%;
+	align-items: center;
+}
+
+ .sliders > * {
+	width: 40%;
+}
+
+.instructions {
+	display: inline-block;
+	width: 25%;
+	vertical-align: top;
+	background: red;
+	color: white;
+	border-radius: 5px;
+	padding: 5px;
+}
+

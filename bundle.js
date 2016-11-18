@@ -109,10 +109,8 @@
 	    var currentMap = void 0;
 	    if (markers[0].map) {
 	      currentMap = null;
-	      $(this).html("Show Markers");
 	    } else {
 	      currentMap = map;
-	      $(this).html("Hide Markers");
 	    }
 	    markers.forEach(function (mark) {
 	      return mark.setMap(currentMap);
@@ -135,7 +133,7 @@
 	      return mark.setMap(null);
 	    });
 	    markers = [];
-	    currentPath.setMap(null);
+	    currentPath ? currentPath.setMap(null) : null;
 	  });
 	
 	  $('#presets').change(function () {
@@ -161,73 +159,79 @@
 	  $('#runGoog').click(function () {
 	
 	    // diasable button until animation is complete
-	    $(":input").attr("disabled", true);
+	    if (markers.length > 4) {
+	      (function () {
+	        $(":input").attr("disabled", true);
 	
-	    currentPath ? currentPath.setMap(null) : null;
-	    var p = markers.map(function (mark) {
-	      return { lat: mark.position.lat(), lng: mark.position.lng() };
-	    });
-	    p.push({ lat: markers[0].position.lat(), lng: markers[0].position.lng() });
-	    var route = new google.maps.Polyline({
-	      path: p,
-	      geodesic: true,
-	      strokeColor: '#FF0000',
-	      strokeOpacity: 1.0,
-	      strokeWeight: 2
-	    });
-	    // route.setMap(map);
-	    var thePath = route.getPath();
-	    var algoAnswer = (0, _traveling_salesman_algorithm.googAlgo)(thePath.getArray(), parseInt($('#display-num-evals').html()));
-	    var paths = algoAnswer.routes;
-	    var distances = algoAnswer.distances;
-	    console.log(distances[distances.length - 1] / 1609.34);
+	        currentPath ? currentPath.setMap(null) : null;
+	        var p = markers.map(function (mark) {
+	          return { lat: mark.position.lat(), lng: mark.position.lng() };
+	        });
+	        p.push({ lat: markers[0].position.lat(), lng: markers[0].position.lng() });
+	        var route = new google.maps.Polyline({
+	          path: p,
+	          geodesic: true,
+	          strokeColor: '#FF0000',
+	          strokeOpacity: 1.0,
+	          strokeWeight: 2
+	        });
+	        // route.setMap(map);
+	        var thePath = route.getPath();
+	        var algoAnswer = (0, _traveling_salesman_algorithm.googAlgo)(thePath.getArray(), parseInt($('#display-num-evals').html()));
+	        var paths = algoAnswer.routes;
+	        var distances = algoAnswer.distances;
+	        console.log(distances[distances.length - 1] / 1609.34);
 	
-	    var _loop = function _loop(i) {
-	      var poly = new google.maps.Polyline({
-	        path: paths[i],
-	        geodesic: true,
-	        strokeColor: '#FF0000',
-	        strokeOpacity: 1.0,
-	        strokeWeight: 2
-	      });
-	      setTimeout(function () {
-	        poly.setMap(map);setTimeout(function () {
-	          poly.setMap(null);
-	        }, 250);
-	      }, i * 250);
-	    };
+	        var _loop = function _loop(i) {
+	          var poly = new google.maps.Polyline({
+	            path: paths[i],
+	            geodesic: true,
+	            strokeColor: '#FF0000',
+	            strokeOpacity: 1.0,
+	            strokeWeight: 2
+	          });
+	          setTimeout(function () {
+	            poly.setMap(map);setTimeout(function () {
+	              poly.setMap(null);
+	            }, 250);
+	          }, i * 250);
+	        };
 	
-	    for (var i = 0; i < paths.length; i++) {
-	      _loop(i);
+	        for (var i = 0; i < paths.length; i++) {
+	          _loop(i);
+	        }
+	
+	        // route.setMap(null);
+	        var bestRoute = paths[paths.length - 1];
+	        bestRoute.push(bestRoute[0]);
+	        var bestPath = new google.maps.Polyline({
+	          path: bestRoute,
+	          geodesic: true,
+	          strokeColor: '#FF0000',
+	          strokeOpacity: 1.0,
+	          strokeWeight: 2
+	        });
+	        currentPath = bestPath;
+	
+	        // set best path onto the map and reenable the button to run again
+	        if ($('#presets').val() == 2) {
+	          bestPath = new google.maps.Polyline({
+	            path: _coords2.default[2],
+	            geodesic: true,
+	            strokeColor: '#FF0000',
+	            strokeOpacity: 1.0,
+	            strokeWeight: 2
+	          });
+	          currentPath = bestPath;
+	        }
+	
+	        setTimeout(function () {
+	          bestPath.setMap(map);$(":input").attr("disabled", false);
+	        }, paths.length * 250);
+	      })();
+	    } else {
+	      alert("Too easy. Pick some more points.");
 	    }
-	
-	    // route.setMap(null);
-	    var bestRoute = paths[paths.length - 1];
-	    bestRoute.push(bestRoute[0]);
-	    var bestPath = new google.maps.Polyline({
-	      path: bestRoute,
-	      geodesic: true,
-	      strokeColor: '#FF0000',
-	      strokeOpacity: 1.0,
-	      strokeWeight: 2
-	    });
-	    currentPath = bestPath;
-	
-	    // set best path onto the map and reenable the button to run again
-	    if ($('#presets').val() == 2) {
-	      bestPath = new google.maps.Polyline({
-	        path: _coords2.default[2],
-	        geodesic: true,
-	        strokeColor: '#FF0000',
-	        strokeOpacity: 1.0,
-	        strokeWeight: 2
-	      });
-	      currentPath = bestPath;
-	    }
-	
-	    setTimeout(function () {
-	      bestPath.setMap(map);$(":input").attr("disabled", false);
-	    }, paths.length * 250);
 	  });
 	
 	  $('#num-evals').change(function () {
