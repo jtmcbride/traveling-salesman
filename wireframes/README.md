@@ -14,8 +14,8 @@ The traveling salesman problem is a classic computer science problem. I will imp
 ## Wireframes
 
 The app will consist of a single screen with a map and several inputs.
+![alt-tag](salesman.png)
 
-![alt-tag](wireframes/salesman.png)
 
 This project will be implemented with the following technologies:
 
