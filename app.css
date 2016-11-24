@@ -78,7 +78,7 @@ button:disabled {
 	display: inline-block;
 	width: 25%;
 	vertical-align: top;
-	background: red;
+	background: black;
 	color: white;
 	border-radius: 5px;
 	padding: 5px;
