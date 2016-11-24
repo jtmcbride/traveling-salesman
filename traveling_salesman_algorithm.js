@@ -123,7 +123,6 @@ export const googAlgo = (tour, nfe) => {
     temp = 100 * Math.pow(.99, i);
   }
   routes.push(bestTour);
-  console.log(count);
   distances.push(bestD);
   return {routes, distances};
 }

@@ -122,7 +122,7 @@ $(() => {
       let algoAnswer = googAlgo(thePath.getArray(), parseInt($('#display-num-evals').html()));
       let paths = algoAnswer.routes;
       let distances = algoAnswer.distances;
-      console.log(distances[distances.length-1]/ 1609.34);
+      // console.log(distances[distances.length-1]/ 1609.34);
 
       for (let i = 0; i < paths.length; i++) {
         let poly = new google.maps.Polyline({
@@ -176,9 +176,9 @@ $(() => {
   google.maps.event.addListener(map, 'click', function(event) {
     let marker = new google.maps.Marker({position: event.latLng, map: map});
     markers.push(marker);
-    let it = ""
-    markers.forEach(m => it += `{lat: ${m.position.lat()}, lng: ${m.position.lng()}},`)
-    console.log(it)
+    // let it = ""
+    // markers.forEach(m => it += `{lat: ${m.position.lat()}, lng: ${m.position.lng()}},`)
+    // console.log(it)
   });
 });
 
