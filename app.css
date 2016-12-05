@@ -9,7 +9,7 @@
 	width: 70%;
 	margin: 0 auto;
 	display: inline-block;
-	height: 500px;
+	height: 85vh;
 }
 
 body {
@@ -34,7 +34,6 @@ h1.title {
 }
 
 button {
-	width: 30%;
 	background: teal;
 	border: none;
 	border-radius: 5px;
@@ -53,20 +52,21 @@ button:disabled {
 }
 
 .buttons{
-	width: 70%;
+	width: 100%;
 	display: flex;
+	flex-direction: column;
 	justify-content: space-between;
 	float: right;
 	margin-right: 50px
 }
 
-.buttons > button {
+button {
 	margin: 5px;
-
 }
 
 .sliders {
 	width: 70%;
+	display: none;
 	align-items: center;
 }
 
@@ -75,13 +75,14 @@ button:disabled {
 }
 
 .instructions {
-	display: inline-block;
+	display: inline-flex;
+	flex-direction: column;
 	width: 25%;
 	vertical-align: top;
 	background: black;
 	color: white;
 	border-radius: 5px;
-	padding: 5px;
+	padding: 15px;
 }
 
 .tabs {
@@ -105,7 +106,7 @@ button:disabled {
 }
 
 .tabs > span.active {
-	background-color: red;
+	background-color: teal;
 	color: white;
 }
 

@@ -27,13 +27,13 @@ export const tourDistance = (tour) => {
 function shuffle (array) {
   var i = 0
     , j = 0
-    , temp = null
+    , temp = null;
 
   for (i = array.length - 1; i > 0; i -= 1) {
-    j = Math.floor(Math.random() * (i + 1))
-    temp = array[i]
-    array[i] = array[j]
-    array[j] = temp
+    j = Math.floor(Math.random() * (i + 1));
+    temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
   }
 }
 
@@ -55,7 +55,6 @@ export const algo = (tour, context) => {
     let high = Math.max(idxA, idxB)
     // let a = newTour[idxA];
     // let b = newTour[idxB];
-    // debugger;
     newTour.splice(low, high-low, ...newTour.slice(low,high).reverse());
     // newTour[idxA] = b;
     // newTour[idxB] = a;
@@ -67,7 +66,6 @@ export const algo = (tour, context) => {
     }
     let rand = Math.random();
     if (newTourDistance < bestD || rand < prob) {
-       // console.log(newTourDistance);
        bestTour = newTour;
        bestD = newTourDistance;
        ans.push(bestD);
@@ -112,7 +110,8 @@ export const googAlgo = (tour, nfe) => {
     }
     let rand = Math.random();
     if (rand < prob) { count++ }
-    if (newTourDistance < bestD || rand < prob) {
+    if ((newTourDistance < bestD || rand < prob) && newTourDistance !== bestD) {
+       // debugger
        bestTour = newTour;
        bestD = newTourDistance;
        distances.push(bestD);

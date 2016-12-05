@@ -90,6 +90,7 @@ $(() => {
   $('#presets').change(function() {
     markers.forEach(mark => mark.setMap(null));
     if ($(this).val() == 0) {markers = []} else {
+      debugger
       markers = coords[$(this).val()].map(c => new google.maps.Marker({position: c, map: map}));
     }
     currentPath ? currentPath.setMap(null) : null;
@@ -104,8 +105,9 @@ $(() => {
   $('#runGoog').click(function () {
 
     // diasable button until animation is complete
-    if (markers.length > 4) {
+    if (markers.length > 0) {
       $(":input").attr("disabled", true);
+      // $("")
 
       currentPath ? currentPath.setMap(null) : null;
       let p = markers.map(mark => ({lat: mark.position.lat(), lng: mark.position.lng()}));
@@ -161,8 +163,6 @@ $(() => {
       }
 
       setTimeout(() => {bestPath.setMap(map);$(":input").attr("disabled", false);}, paths.length * 250);
-    } else {
-      alert("Too easy. Pick some more points.")
     }
   });
 
@@ -217,7 +217,6 @@ export const connectPoints = (context, points) => {
   }
   context.stroke();
   // context.closePath();
-
 }
 
 

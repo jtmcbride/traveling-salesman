@@ -20,16 +20,11 @@
 		<div id="route">
 			<h1 class="title">Traveling Salesman</h1>
 			<div class="instructions">
-				Welcome! Click on the map to select some stops for your trip. Or you can just pick one
-				of the preset routes if you'd rather. When you have all the stops you want in your route click optimize and watch it find (one of) the shortest routes. The Traveling Salesman is a classic computer science problem. This app uses an algorithm which implements a 
-				simulated annealing strategy to quickly find one of the shortest routes for you. Give it a try!
-			</div>
-			<div id="map"></div>
-			<div class="buttons sliders">
-				<span>
-				<input id="num-evals" value="67" type="range" min="0" max="100" /> <br />
-				<span>Number of evaluations: <span id="display-num-evals">10000</span></span>
-				</span>
+				<h4>
+					Step 1: Click on the map to select some stops for your trip.
+					 Or just pick a preset route below.
+				</h4>
+
 				<span>
 					Presets:
 					<select id="presets" name="presets">
@@ -39,12 +34,32 @@
 						<option value="2">Special</option>
 					</select>
 				</span>
+				<h4>Step 2: After you've selected you're stops you can hide the markers if you'd like.</h4>
+				<button id="hide-markers">Toggle Markers</button>
+
+
+				<div class="buttons sliders">
+					<span>
+						<input id="num-evals" value="67" type="range" min="0" max="100" /> <br />
+						<span>Number of evaluations: <span id="display-num-evals">10000</span></span>
+					</span>
+				</div>
+				<h4>
+					Step 3: Click optimize and watch it find one of the shortest routes.
+				</h4>
+				<div class="buttons sliders">
 			</div>
 			<div class="buttons">
 				<button id="runGoog">Optimize Route</button>
-				<button id="hide-markers">Toggle Markers</button>
+				<h4>
+					Step 4: Add some more points and try again or clear the map and start over.
+				</h4>
 				<button id="clear-map">Clear Map</button>
 			</div>
+			</div>
+		
+			<div id="map"></div>
+
 		</div>
 		<div id="paint">
 			

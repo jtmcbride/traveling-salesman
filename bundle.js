@@ -156,6 +156,7 @@
 	    if ($(this).val() == 0) {
 	      markers = [];
 	    } else {
+	      debugger;
 	      markers = _coords2.default[$(this).val()].map(function (c) {
 	        return new google.maps.Marker({ position: c, map: map });
 	      });
@@ -172,9 +173,10 @@
 	  $('#runGoog').click(function () {
 	
 	    // diasable button until animation is complete
-	    if (markers.length > 4) {
+	    if (markers.length > 0) {
 	      (function () {
 	        $(":input").attr("disabled", true);
+	        // $("")
 	
 	        currentPath ? currentPath.setMap(null) : null;
 	        var p = markers.map(function (mark) {
@@ -193,7 +195,7 @@
 	        var algoAnswer = (0, _traveling_salesman_algorithm.googAlgo)(thePath.getArray(), parseInt($('#display-num-evals').html()));
 	        var paths = algoAnswer.routes;
 	        var distances = algoAnswer.distances;
-	        console.log(distances[distances.length - 1] / 1609.34);
+	        // console.log(distances[distances.length-1]/ 1609.34);
 	
 	        var _loop = function _loop(i) {
 	          var poly = new google.maps.Polyline({
@@ -242,8 +244,6 @@
 	          bestPath.setMap(map);$(":input").attr("disabled", false);
 	        }, paths.length * 250);
 	      })();
-	    } else {
-	      alert("Too easy. Pick some more points.");
 	    }
 	  });
 	
@@ -257,11 +257,9 @@
 	  google.maps.event.addListener(map, 'click', function (event) {
 	    var marker = new google.maps.Marker({ position: event.latLng, map: map });
 	    markers.push(marker);
-	    var it = "";
-	    markers.forEach(function (m) {
-	      return it += '{lat: ' + m.position.lat() + ', lng: ' + m.position.lng() + '},';
-	    });
-	    console.log(it);
+	    // let it = ""
+	    // markers.forEach(m => it += `{lat: ${m.position.lat()}, lng: ${m.position.lng()}},`)
+	    // console.log(it)
 	  });
 	});
 	
@@ -395,7 +393,6 @@
 	    var high = Math.max(idxA, idxB);
 	    // let a = newTour[idxA];
 	    // let b = newTour[idxB];
-	    // debugger;
 	    newTour.splice.apply(newTour, [low, high - low].concat(_toConsumableArray(newTour.slice(low, high).reverse())));
 	    // newTour[idxA] = b;
 	    // newTour[idxB] = a;
@@ -407,7 +404,6 @@
 	    }
 	    var rand = Math.random();
 	    if (newTourDistance < bestD || rand < prob) {
-	      // console.log(newTourDistance);
 	      bestTour = newTour;
 	      bestD = newTourDistance;
 	      ans.push(bestD);
@@ -454,7 +450,8 @@
 	    if (rand < prob) {
 	      count++;
 	    }
-	    if (newTourDistance < bestD || rand < prob) {
+	    if ((newTourDistance < bestD || rand < prob) && newTourDistance !== bestD) {
+	      // debugger
 	      bestTour = newTour;
 	      bestD = newTourDistance;
 	      distances.push(bestD);
@@ -465,7 +462,6 @@
 	    temp = 100 * Math.pow(.99, i);
 	  }
 	  routes.push(bestTour);
-	  console.log(count);
 	  distances.push(bestD);
 	  return { routes: routes, distances: distances };
 	};
