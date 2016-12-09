@@ -176,9 +176,9 @@ $(() => {
   google.maps.event.addListener(map, 'click', function(event) {
     let marker = new google.maps.Marker({position: event.latLng, map: map});
     markers.push(marker);
-    let it = ""
-    markers.forEach(m => it += `{lat: ${m.position.lat()}, lng: ${m.position.lng()}},`)
-    console.log(it)
+    // let it = ""
+    // markers.forEach(m => it += `{lat: ${m.position.lat()}, lng: ${m.position.lng()}},`)
+    // console.log(it)
   });
 });
 
