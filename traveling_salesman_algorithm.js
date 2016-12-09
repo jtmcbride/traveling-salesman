@@ -86,8 +86,8 @@ export const googAlgo = (tour, nfe) => {
   let routes = [];
   shuffle(tour);
   let count = 0;
-  // let nfe = 10000
-  let temp = 100000;
+  nfe = 20000;
+  let temp = 10000;
   let measureTour = tour.slice(0);
   measureTour.push(measureTour[0]);
   let bestD = google.maps.geometry.spherical.computeLength(measureTour);

@@ -1,5 +1,5 @@
 import mapPoint from './mapPoint';
-import {distance, tourDistance, algo, googAlgo } from './traveling_salesman_algorithm';
+import { distance, tourDistance, algo, googAlgo } from './traveling_salesman_algorithm';
 import coords from './coords.js';
 
 
@@ -12,8 +12,8 @@ $(() => {
 
   // map setup
   let map = initMap();
-  let markers = [];
-  // 8markers = stateCoords.map(c => new google.maps.Marker({position: c, map: map}));
+  let markers = coords[2].map(c => new google.maps.Marker({position: c, map: map}));
+  // markers = stateCoords.map(c => new google.maps.Marker({position: c, map: map}));
   let pathData = [];
   let currentPath;
 
@@ -90,7 +90,6 @@ $(() => {
   $('#presets').change(function() {
     markers.forEach(mark => mark.setMap(null));
     if ($(this).val() == 0) {markers = []} else {
-      debugger
       markers = coords[$(this).val()].map(c => new google.maps.Marker({position: c, map: map}));
     }
     currentPath ? currentPath.setMap(null) : null;
@@ -111,6 +110,7 @@ $(() => {
 
       currentPath ? currentPath.setMap(null) : null;
       let p = markers.map(mark => ({lat: mark.position.lat(), lng: mark.position.lng()}));
+      markers.forEach(mark => mark.setMap(null));
       p.push({lat: markers[0].position.lat(), lng: markers[0].position.lng()})
       let route = new google.maps.Polyline({
         path: p,
@@ -151,16 +151,16 @@ $(() => {
       currentPath = bestPath;
 
       // set best path onto the map and reenable the button to run again
-      if ($('#presets').val() == 2) {
-        bestPath = new google.maps.Polyline({
-          path: coords[2],
-          geodesic: true,
-          strokeColor: '#FF0000',
-          strokeOpacity: 1.0,
-          strokeWeight: 2
-        });
-        currentPath = bestPath;
-      }
+      // if ($('#presets').val() == 2) {
+      //   bestPath = new google.maps.Polyline({
+      //     path: coords[2],
+      //     geodesic: true,
+      //     strokeColor: '#FF0000',
+      //     strokeOpacity: 1.0,
+      //     strokeWeight: 2
+      //   });
+      //   currentPath = bestPath;
+      // }
 
       setTimeout(() => {bestPath.setMap(map);$(":input").attr("disabled", false);}, paths.length * 250);
     }
@@ -176,9 +176,9 @@ $(() => {
   google.maps.event.addListener(map, 'click', function(event) {
     let marker = new google.maps.Marker({position: event.latLng, map: map});
     markers.push(marker);
-    // let it = ""
-    // markers.forEach(m => it += `{lat: ${m.position.lat()}, lng: ${m.position.lng()}},`)
-    // console.log(it)
+    let it = ""
+    markers.forEach(m => it += `{lat: ${m.position.lat()}, lng: ${m.position.lng()}},`)
+    console.log(it)
   });
 });
 

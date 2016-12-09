@@ -6,10 +6,11 @@
 }
 
 #map {
-	width: 70%;
+	width: calc(100% - 230px);
 	margin: 0 auto;
 	display: inline-block;
-	height: 85vh;
+	height: 100vh;
+	float: right;
 }
 
 body {
@@ -77,12 +78,14 @@ button {
 .instructions {
 	display: inline-flex;
 	flex-direction: column;
-	width: 25%;
+	width: 200px;
 	vertical-align: top;
 	background: black;
 	color: white;
-	border-radius: 5px;
 	padding: 15px;
+	position: absolute;
+	z-index: 10;
+	height: 100vh;
 }
 
 .tabs {
