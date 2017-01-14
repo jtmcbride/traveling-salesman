@@ -49,7 +49,7 @@ button:hover {
 }
 
 button:disabled {
-	background: grey;
+	background: lightgrey;
 }
 
 .buttons{
@@ -58,7 +58,7 @@ button:disabled {
 	flex-direction: column;
 	justify-content: space-between;
 	float: right;
-	margin-right: 50px
+	margin-right: 50px;
 }
 
 button {

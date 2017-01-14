@@ -5,7 +5,6 @@ export default class mapPoint {
     this.y = y;
   }
 
-
   getX() {
     return this.x;
   }
